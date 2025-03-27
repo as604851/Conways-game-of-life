@@ -1,0 +1,140 @@
+
+#include <iostream> 
+#include <conio.h> 
+#include <algorithm>
+#include <iostream>
+#include <conio.h>
+#include <string>
+#include <windows.h>
+
+#include <stdio.h>
+
+using namespace std;
+
+
+#pragma warning(suppress : 4996)
+#pragma warning(disable : 4996)
+
+
+
+void printBoard(char board[9][9]) {
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            std::cout << board[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+
+
+
+int main() {    // Reversi Startfeld 
+    int zu = 0;
+    char f[9][9] = {
+        {' ', 'o', ' ', ' ', ' ', ' ', 'o', ' ', ' '},
+        {' ', 'o', ' ', ' ', ' ', ' ', 'o', ' ', ' '},
+        {' ', 'o', ' ', ' ', ' ', ' ', 'o', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', 'o', 'o', ' ', ' ', 'o', ' ', ' '},
+        {' ', ' ', ' ', 'o', ' ', ' ', 'o', ' ', ' '},
+        {' ', ' ', ' ', 'o', ' ', ' ', 'o', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+    };
+    char g[9][9] = {
+        {'x', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'x'}
+    };
+
+    // Ausgabe des Startfelds
+    printBoard(f);
+    int b = 0;
+    int a = 0;
+    int ki1 = 1;
+start:
+    if (_kbhit())ki1 = _getch();
+
+    if (ki1 == 72) { f[4][4] = 'o'; f[2][4] = 'o'; f[3][4] = 'o'; f[4][1] = 'o'; f[2][1] = 'o'; f[3][1] = 'o'; ki1 = 0; }
+
+    for (int y = 0; y < 9; y++) {
+
+        for (int x = 0; x < 9; x++) {
+            g[y][x] = ' ';
+        }
+    }
+
+    for (int y = 0; y < 9; y++) {
+
+        for (int x = 0; x < 9; x++) {
+
+            if (f[y][x] == 'o') { a++; }
+            if (f[y][x + 1] == 'o') { b++; }
+            if (f[y][x - 1] == 'o') { b++; }
+            if (f[y + 1][x] == 'o') { b++; }
+            if (f[y - 1][x] == 'o') { b++; }
+            if (f[y + 1][x + 1] == 'o') { b++; }
+            if (f[y + 1][x - 1] == 'o') { b++; }
+            if (f[y - 1][x + 1] == 'o') { b++; }
+            if (f[y - 1][x - 1] == 'o') { b++; }
+            if (b < 2) { g[y][x] = ' '; }
+            if (b > 3) { g[y][x] = ' '; }
+            if (b == 3 || b == 2) { if (a == 1) { g[y][x] = 'o'; } }
+            if (b == 3 && f[y][x] == ' ') { g[y][x] = 'o'; }
+
+            b = 0; a = 0;
+
+
+        }
+    }
+
+    Sleep(100);
+    system("CLS");
+    printBoard(g);
+    for (int y = 0; y < 9; y++) {
+
+        for (int x = 0; x < 9; x++) {
+            f[y][x] = ' ';
+        }
+    }
+
+
+    for (int y = 0; y < 9; y++) {
+
+        for (int x = 0; x < 9; x++) {
+
+            if (g[y][x] == 'o') { a++; }
+            if (g[y][x + 1] == 'o') { b++; }
+            if (g[y][x - 1] == 'o') { b++; }
+            if (g[y + 1][x] == 'o') { b++; }
+            if (g[y - 1][x] == 'o') { b++; }
+            if (g[y + 1][x + 1] == 'o') { b++; }
+            if (g[y + 1][x - 1] == 'o') { b++; }
+            if (g[y - 1][x + 1] == 'o') { b++; }
+            if (g[y - 1][x - 1] == 'o') { b++; }
+            if (b < 2) { f[y][x] = ' '; }
+            if (b > 3) { f[y][x] = ' '; }
+            if (b == 3 || b == 2) { if (a == 1) { f[y][x] = 'o'; } }
+            if (b == 3 && f[y][x] == ' ') { f[y][x] = 'o'; }
+
+            b = 0; a = 0;
+
+
+        }
+    }
+
+
+    Sleep(10);
+    system("CLS");
+    printBoard(f);
+    goto start;
+    return 0;
+
+}
